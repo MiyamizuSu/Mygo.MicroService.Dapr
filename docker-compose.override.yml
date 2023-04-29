@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  recall-textlist.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "35210:80"
+      - "50001"

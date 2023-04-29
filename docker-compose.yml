@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  recall-textlist.api:
+    image: recall-textlist.api
+    build:
+      context: .
+      dockerfile: Contrib/TextList.Api/Dockerfile
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
