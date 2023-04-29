@@ -13,4 +13,7 @@ services:
     command: ["./daprd",
       "-app-id", "recall-textlist.api",
       "-app-port", "80",
+      "-components-path", "/components"
       ]
+    volumes:
+      - "./dapr/components/:/components"
