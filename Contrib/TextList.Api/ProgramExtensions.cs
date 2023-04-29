@@ -15,9 +15,24 @@ public static class ProgramExtensions {
             new DaprClientBuilder().Build());
     }
 
+    public static void AddCustomSwagger(this WebApplicationBuilder builder) =>
+        builder.Services.AddSwaggerGen();
+
+
+    public static void UseCustomSwagger(this WebApplication app) {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    public static void AddCustomApplicationServices(
+        this WebApplicationBuilder builder) {
+        builder.Services.AddScoped<IIdentityService, MockIdentityService>();
+    }
+
     public static void AddCustomDatabase(this WebApplicationBuilder builder) {
         builder.Services.AddDbContext<TextListContext>(options =>
-            options.UseSqlServer(builder.Configuration["ConnectionStrings:TextListContext"]));
+            options.UseSqlServer(
+                builder.Configuration["ConnectionStrings:TextListContext"]));
     }
 
     public static void ApplyDatabaseMigration(this WebApplication app) {
