@@ -8,3 +8,10 @@ services:
       dockerfile: Contrib/TextList.Api/Dockerfile
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+
+  recall-textlist.api-dapr:
+    image: "daprio/daprd:1.9.4"
+    network_mode: "service:recall-textlist.api"
+    depends_on:
+      - recall-textlist.api

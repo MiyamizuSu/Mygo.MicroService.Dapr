@@ -7,3 +7,10 @@ services:
     ports:
       - "35210:80"
       - "50001"
+
+
+  recall-textlist.api-dapr:
+    command: ["./daprd",
+      "-app-id", "recall-textlist.api",
+      "-app-port", "80",
+      ]
