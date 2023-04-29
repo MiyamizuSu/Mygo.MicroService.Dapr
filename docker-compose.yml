@@ -1,6 +1,12 @@
 version: '3.4'
 
 services:
+  recall-sqldata:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+
   recall-textlist.api:
     image: recall-textlist.api
     build:
