@@ -1,8 +1,26 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{8E198C40-1976-484D-A147-988B6CBC13A3}"
+	ProjectSection(SolutionItems) = preProject
+		docs\m1.md = docs\m1.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contrib", "Contrib", "{65D66A8A-232C-42FF-85E8-100A287D98D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextList.Api", "Contrib\TextList.Api\TextList.Api.csproj", "{CCA5B7D2-E1CE-49C2-A8EE-5408D90B0DD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CCA5B7D2-E1CE-49C2-A8EE-5408D90B0DD2} = {65D66A8A-232C-42FF-85E8-100A287D98D3}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CCA5B7D2-E1CE-49C2-A8EE-5408D90B0DD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCA5B7D2-E1CE-49C2-A8EE-5408D90B0DD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCA5B7D2-E1CE-49C2-A8EE-5408D90B0DD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCA5B7D2-E1CE-49C2-A8EE-5408D90B0DD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
