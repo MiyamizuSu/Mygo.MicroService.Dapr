@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddCustomConfiguration();
 // Console.WriteLine(builder.Configuration["ConnectionStrings:TextListContext"]);
+builder.AddCustomSerilog();
 builder.AddCustomSwagger();
 builder.AddCustomApplicationServices();
 builder.AddCustomDatabase();

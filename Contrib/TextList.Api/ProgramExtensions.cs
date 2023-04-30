@@ -3,6 +3,7 @@ using Dapr.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Polly;
 using RecAll.Contrib.TextList.Api.Services;
+using Serilog;
 
 namespace RecAll.Contrib.TextList.Api;
 
@@ -13,6 +14,17 @@ public static class ProgramExtensions {
         this WebApplicationBuilder builder) {
         builder.Configuration.AddDaprSecretStore("recall-secretstore",
             new DaprClientBuilder().Build());
+    }
+
+    public static void AddCustomSerilog(this WebApplicationBuilder builder) {
+        var seqServerUrl = builder.Configuration["Serilog:SeqServerUrl"];
+
+        Log.Logger = new LoggerConfiguration().ReadFrom
+            .Configuration(builder.Configuration).WriteTo.Console().WriteTo
+            .Seq(seqServerUrl).Enrich.WithProperty("ApplicationName", AppName)
+            .CreateLogger();
+
+        builder.Host.UseSerilog();
     }
 
     public static void AddCustomSwagger(this WebApplicationBuilder builder) =>

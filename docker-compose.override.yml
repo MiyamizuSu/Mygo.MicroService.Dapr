@@ -1,6 +1,13 @@
 version: '3.4'
 
 services:
+  recall-seq:
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "35340:80"
+  
+  
   recall-sqldata:
     environment:
       - SA_PASSWORD=Pass@word
@@ -20,11 +27,11 @@ services:
 
 
   recall-textlist.api-dapr:
-    command: ["./daprd",
-      "-app-id", "recall-textlist.api",
-      "-app-port", "80",
-      "-components-path", "/components"
-      ]
+    command: [ "./daprd",
+               "-app-id", "recall-textlist.api",
+               "-app-port", "80",
+               "-components-path", "/components"
+    ]
     volumes:
       - "./dapr/components/:/components"
 

@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{8E198C40-1976-484D-A147-988B6CBC13A3}"
 	ProjectSection(SolutionItems) = preProject
 		docs\m1.md = docs\m1.md
+		docs\m2.md = docs\m2.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contrib", "Contrib", "{65D66A8A-232C-42FF-85E8-100A287D98D3}"

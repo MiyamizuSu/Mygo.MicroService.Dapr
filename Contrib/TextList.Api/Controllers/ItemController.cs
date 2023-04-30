@@ -11,13 +11,15 @@ namespace RecAll.Contrib.TextList.Api.Controllers;
 public class ItemController {
     private readonly TextListContext _textListContext;
     private readonly IIdentityService _identityService;
+    private readonly ILogger<ItemController> _logger;
 
     public ItemController(TextListContext textListContext,
-        IIdentityService identityService) {
+        IIdentityService identityService, ILogger<ItemController> logger) {
         _textListContext = textListContext ??
             throw new ArgumentNullException(nameof(textListContext));
         _identityService = identityService ??
             throw new ArgumentNullException(nameof(identityService));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     [Route("create")]
@@ -25,6 +27,10 @@ public class ItemController {
     // ServiceResultViewModel<string>
     public async Task<ActionResult<string>> CreateAsync(
         [FromBody] CreateTextItemCommand command) {
+        _logger.LogInformation(
+            "----- Handling command {CommandName} ({@Command})",
+            command.GetType().Name, command);
+
         var textItem = new TextItem {
             Content = command.Content,
             UserIdentityGuid = _identityService.GetUserIdentityGuid(),
@@ -32,6 +38,9 @@ public class ItemController {
         };
         var textItemEntity = _textListContext.Add(textItem);
         await _textListContext.SaveChangesAsync();
+
+        _logger.LogInformation("----- Command {CommandName} handled",
+            command.GetType().Name);
 
         // return ServiceResult<string>
         //     .CreateSucceededResult(textItemEntity.Entity.Id.ToString())
@@ -43,6 +52,10 @@ public class ItemController {
     [HttpPost]
     public async Task<ActionResult> UpdateAsync(
         [FromBody] UpdateTextItemCommand command) {
+        _logger.LogInformation(
+            "----- Handling command {CommandName} ({@Command})",
+            command.GetType().Name, command);
+
         var userIdentityGuid = _identityService.GetUserIdentityGuid();
 
         var textItem = await _textListContext.TextItems.FirstOrDefaultAsync(p =>
@@ -50,6 +63,9 @@ public class ItemController {
             !p.IsDeleted);
 
         if (textItem is null) {
+            _logger.LogWarning(
+                $"用户{userIdentityGuid}尝试查看已删除、不存在或不属于自己的TextItem {command.Id}");
+
             // return ServiceResult
             //     .CreateFailedResult($"Unknown TextItem id: {command.Id}")
             //     .ToServiceResultViewModel();
@@ -58,6 +74,9 @@ public class ItemController {
 
         textItem.Content = command.Content;
         await _textListContext.SaveChangesAsync();
+
+        _logger.LogInformation("----- Command {CommandName} handled",
+            command.GetType().Name);
 
         // return ServiceResult.CreateSucceededResult().ToServiceResultViewModel();
         return new OkResult();
@@ -74,6 +93,9 @@ public class ItemController {
             !p.IsDeleted);
 
         if (textItem is null) {
+            _logger.LogWarning(
+                $"用户{userIdentityGuid}尝试查看已删除、不存在或不属于自己的TextItem {id}");
+
             // return ServiceResult<TextItemViewModel>
             //     .CreateFailedResult($"Unknown TextItem id: {id}")
             //     .ToServiceResultViewModel();
@@ -105,6 +127,9 @@ public class ItemController {
             !p.IsDeleted);
 
         if (textItem is null) {
+            _logger.LogWarning(
+                $"用户{userIdentityGuid}尝试查看已删除、不存在或不属于自己的TextItem, ItemID: {itemId}");
+
             // return ServiceResult<TextItemViewModel>
             //     .CreateFailedResult($"Unknown TextItem with ItemID: {itemId}")
             //     .ToServiceResultViewModel();
@@ -142,6 +167,9 @@ public class ItemController {
             var missingIds = string.Join(",",
                 itemIds.Except(textItems.Select(p => p.ItemId.Value))
                     .Select(p => p.ToString()));
+
+            _logger.LogWarning(
+                $"用户{userIdentityGuid}尝试查看已删除、不存在或不属于自己的TextItem {missingIds}");
 
             // return ServiceResult<IEnumerable<TextItemViewModel>>
             //     .CreateFailedResult($"Unknown Item id: {missingIds}")

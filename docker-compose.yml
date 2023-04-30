@@ -1,6 +1,12 @@
 version: '3.4'
 
 services:
+  recall-seq:
+    image: datalust/seq:latest
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  
+  
   recall-sqldata:
     image: mcr.microsoft.com/mssql/server:2019-latest
     extra_hosts:
