@@ -4,6 +4,8 @@
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <AssemblyName>RecAll.Infrastructure.Api</AssemblyName>
+        <RootNamespace>RecAll.Infrastructure.Api</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
