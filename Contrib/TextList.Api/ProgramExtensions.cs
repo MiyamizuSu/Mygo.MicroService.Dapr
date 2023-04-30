@@ -1,9 +1,13 @@
 ﻿using Dapr.Client;
 using Dapr.Extensions.Configuration;
+using Infrastructure.Api;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Polly;
 using RecAll.Contrib.TextList.Api.Services;
 using Serilog;
+using TheSalLab.GeneralReturnValues;
 
 namespace RecAll.Contrib.TextList.Api;
 
@@ -29,6 +33,13 @@ public static class ProgramExtensions {
 
     public static void AddCustomSwagger(this WebApplicationBuilder builder) =>
         builder.Services.AddSwaggerGen();
+
+    public static void
+        AddCustomHealthChecks(this WebApplicationBuilder builder) =>
+        builder.Services.AddHealthChecks()
+            .AddCheck("self", () => HealthCheckResult.Healthy()).AddDapr()
+            .AddSqlServer(builder.Configuration["ConnectionStrings:TextListContext"]!,
+                name: "TextListDb-check", tags: new[] { "TextListDb" });
 
 
     public static void UseCustomSwagger(this WebApplication app) {
@@ -68,5 +79,18 @@ public static class ProgramExtensions {
                     "Exception {0} with message {1} detected during database migration (retry attempt {2})",
                     exception.GetType().Name, exception.Message, retry);
             });
+    }
+
+    public static void AddInvalidModelStateResponseFactory(
+        this WebApplicationBuilder builder) {
+        builder.Services.AddOptions().Configure<ApiBehaviorOptions>(options => {
+            options.InvalidModelStateResponseFactory = context =>
+                new OkObjectResult(ServiceResult
+                    .CreateInvalidParameterResult(
+                        new ValidationProblemDetails(context.ModelState).Errors
+                            .Select(p =>
+                                $"{p.Key}: {string.Join(" / ", p.Value)}"))
+                    .ToServiceResultViewModel());
+        });
     }
 }
