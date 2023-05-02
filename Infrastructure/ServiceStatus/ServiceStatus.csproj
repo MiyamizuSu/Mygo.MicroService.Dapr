@@ -6,11 +6,16 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <AssemblyName>RecAll.Infrastructure.ServiceStatus</AssemblyName>
         <RootNamespace>RecAll.Infrastructure.ServiceStatus</RootNamespace>
+        <UserSecretsId>addf06b4-896a-4bd5-ad7f-38310129773f</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerfileContext>..\..</DockerfileContext>
+        <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="AspNetCore.HealthChecks.UI" Version="6.0.5" />
       <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="6.0.5" />
+      <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.2" />
     </ItemGroup>
 
 </Project>

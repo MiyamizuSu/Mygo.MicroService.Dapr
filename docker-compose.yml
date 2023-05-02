@@ -27,3 +27,11 @@ services:
     network_mode: "service:recall-textlist.api"
     depends_on:
       - recall-textlist.api
+  
+  
+  recall-servicestatus:
+    image: ${DOCKER_REGISTRY-}servicestatus
+    build:
+      context: .
+      dockerfile: Infrastructure/ServiceStatus/Dockerfile
+
