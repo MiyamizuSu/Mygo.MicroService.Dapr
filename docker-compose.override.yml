@@ -11,7 +11,7 @@ services:
       - recall-sqldata:/var/opt/mssql
 
 
-  recall-textlist.api:
+  recall-textlistapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
@@ -19,9 +19,9 @@ services:
       - "50001"
 
 
-  recall-textlist.api-dapr:
+  recall-textlistapi-dapr:
     command: ["./daprd",
-      "-app-id", "recall-textlist.api",
+      "-app-id", "recall-textlistapi",
       "-app-port", "80",
       "-components-path", "/components"
       ]
