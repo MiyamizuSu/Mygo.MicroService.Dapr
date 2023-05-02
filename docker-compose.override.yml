@@ -18,7 +18,7 @@ services:
       - recall-sqldata:/var/opt/mssql
 
 
-  recall-textlist.api:
+  recall-textlistapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
@@ -26,9 +26,27 @@ services:
       - "50001"
 
 
-  recall-textlist.api-dapr:
+  recall-textlistapi-dapr:
     command: [ "./daprd",
-               "-app-id", "recall-textlist.api",
+               "-app-id", "recall-textlistapi",
+               "-app-port", "80",
+               "-components-path", "/components"
+    ]
+    volumes:
+      - "./dapr/components/:/components"
+
+
+  recall-envoygateway:
+    volumes:
+      - ./Infrastructure/envoy.yaml:/etc/envoy/envoy.yaml
+    ports:
+      - "35191:80"
+      - "35181:8001"
+
+
+  recall-envoygateway-dapr:
+    command: [ "./daprd",
+               "-app-id", "recall-envoygateway",
                "-app-port", "80",
                "-components-path", "/components"
     ]

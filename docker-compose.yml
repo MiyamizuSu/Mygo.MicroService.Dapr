@@ -13,8 +13,8 @@ services:
       - "host.docker.internal:host-gateway"
 
 
-  recall-textlist.api:
-    image: recall-textlist.api
+  recall-textlistapi:
+    image: recall-textlistapi
     build:
       context: .
       dockerfile: Contrib/TextList.Api/Dockerfile
@@ -22,11 +22,24 @@ services:
       - "host.docker.internal:host-gateway"
 
 
-  recall-textlist.api-dapr:
+  recall-textlistapi-dapr:
     image: "daprio/daprd:1.9.4"
-    network_mode: "service:recall-textlist.api"
+    network_mode: "service:recall-textlistapi"
     depends_on:
-      - recall-textlist.api
+      - recall-textlistapi
+  
+  
+  recall-envoygateway:
+    image: envoyproxy/envoy:v1.11.1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+        
+        
+  recall-envoygateway-dapr:
+    image: "daprio/daprd:1.9.4"
+    network_mode: "service:recall-envoygateway"
+    depends_on:
+      - recall-envoygateway
   
   
   recall-servicestatus:

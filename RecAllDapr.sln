@@ -24,6 +24,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", 
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{F58B4BEB-1777-4EC2-953F-3B1057A89EB0}"
+	ProjectSection(SolutionItems) = preProject
+		Infrastructure\envoy.yaml = Infrastructure\envoy.yaml
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Api", "Infrastructure\Infrastructure.Api\Infrastructure.Api.csproj", "{5E3CA28A-38E2-46F7-B192-A853719E477B}"
 EndProject
