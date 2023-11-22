@@ -22,6 +22,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", 
 		dapr\components\recall-secretstore.yaml = dapr\components\recall-secretstore.yaml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "configuration", "configuration", "{423A0285-DD78-4DE5-96F0-458FFAD962B8}"
+	ProjectSection(SolutionItems) = preProject
+		dapr\configuration\recall-configuration.yaml = dapr\configuration\recall-configuration.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +48,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CCA5B7D2-E1CE-49C2-A8EE-5408D90B0DD2} = {65D66A8A-232C-42FF-85E8-100A287D98D3}
 		{418B7B87-6D62-4AFD-93DD-11FC3C572C6E} = {129077C6-92B6-4BD2-AACF-FA69BF1F0C36}
+		{423A0285-DD78-4DE5-96F0-458FFAD962B8} = {129077C6-92B6-4BD2-AACF-FA69BF1F0C36}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8EE0F31-116A-4077-B840-48940901FFE5}

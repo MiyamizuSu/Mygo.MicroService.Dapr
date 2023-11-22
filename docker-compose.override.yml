@@ -1,6 +1,11 @@
 version: '3.4'
 
 services:
+  recall-zipkin:
+    ports:
+      - "35411:9411"
+  
+  
   recall-sqldata:
     environment:
       - SA_PASSWORD=Pass@word
@@ -23,10 +28,12 @@ services:
     command: ["./daprd",
       "-app-id", "recall-textlistapi",
       "-app-port", "80",
-      "-components-path", "/components"
+      "-components-path", "/components",
+      "-config", "/configuration/recall-configuration.yaml"
       ]
     volumes:
       - "./dapr/components/:/components"
+      - "./dapr/configuration/:/configuration"
 
 
 volumes:
