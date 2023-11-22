@@ -1,6 +1,10 @@
 version: '3.4'
 
 services:
+  recall-zipkin:
+    image: openzipkin/zipkin-slim:latest
+    
+    
   recall-seq:
     image: datalust/seq:latest
     extra_hosts:
