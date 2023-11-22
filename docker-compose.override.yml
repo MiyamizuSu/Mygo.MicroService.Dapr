@@ -1,6 +1,11 @@
 version: '3.4'
 
 services:
+  recall-zipkin:
+    ports:
+      - "35411:9411"
+  
+  
   recall-seq:
     environment:
       - ACCEPT_EULA=Y
@@ -27,13 +32,15 @@ services:
 
 
   recall-textlistapi-dapr:
-    command: [ "./daprd",
-               "-app-id", "recall-textlistapi",
-               "-app-port", "80",
-               "-components-path", "/components"
-    ]
+    command: ["./daprd",
+      "-app-id", "recall-textlistapi",
+      "-app-port", "80",
+      "-components-path", "/components",
+      "-config", "/configuration/recall-configuration.yaml"
+      ]
     volumes:
       - "./dapr/components/:/components"
+      - "./dapr/configuration/:/configuration"
 
 
   recall-envoygateway:
