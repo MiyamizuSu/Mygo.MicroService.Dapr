@@ -25,3 +25,7 @@ services:
     network_mode: "service:recall-textlistapi"
     depends_on:
       - recall-textlistapi
+        
+        
+  recall-daprdashboard:
+    image: "daprio/dashboard:latest"
