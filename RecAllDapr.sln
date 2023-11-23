@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Api", "Infra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStatus", "Infrastructure\ServiceStatus\ServiceStatus.csproj", "{AAA53E67-1163-4EB4-AFFB-2FC19D63FCD4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ddd.Domain", "Infrastructure\Ddd.Domain\Ddd.Domain.csproj", "{DCD43905-C1DE-434A-BDCC-E71680934AA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,6 +62,10 @@ Global
 		{AAA53E67-1163-4EB4-AFFB-2FC19D63FCD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAA53E67-1163-4EB4-AFFB-2FC19D63FCD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAA53E67-1163-4EB4-AFFB-2FC19D63FCD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCD43905-C1DE-434A-BDCC-E71680934AA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCD43905-C1DE-434A-BDCC-E71680934AA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCD43905-C1DE-434A-BDCC-E71680934AA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCD43905-C1DE-434A-BDCC-E71680934AA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +76,7 @@ Global
 		{423A0285-DD78-4DE5-96F0-458FFAD962B8} = {129077C6-92B6-4BD2-AACF-FA69BF1F0C36}
 		{5E3CA28A-38E2-46F7-B192-A853719E477B} = {F58B4BEB-1777-4EC2-953F-3B1057A89EB0}
 		{AAA53E67-1163-4EB4-AFFB-2FC19D63FCD4} = {F58B4BEB-1777-4EC2-953F-3B1057A89EB0}
+		{DCD43905-C1DE-434A-BDCC-E71680934AA5} = {F58B4BEB-1777-4EC2-953F-3B1057A89EB0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8EE0F31-116A-4077-B840-48940901FFE5}
