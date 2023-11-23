@@ -31,6 +31,22 @@ services:
     network_mode: "service:recall-textlistapi"
     depends_on:
       - recall-textlistapi
+
+
+  recall-listapi:
+    image: ${DOCKER_REGISTRY-}listapi
+    build:
+      context: .
+      dockerfile: Core/List/List.Api/Dockerfile
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  
+  
+  recall-listapi-dapr:
+    image: "daprio/daprd:1.9.4"
+    network_mode: "service:recall-listapi"
+    depends_on:
+      - recall-listapi
   
   
   recall-envoygateway:
@@ -51,11 +67,4 @@ services:
     build:
       context: .
       dockerfile: Infrastructure/ServiceStatus/Dockerfile
-
-
-  list.api:
-    image: ${DOCKER_REGISTRY-}listapi
-    build:
-      context: .
-      dockerfile: Core/List/List.Api/Dockerfile
 

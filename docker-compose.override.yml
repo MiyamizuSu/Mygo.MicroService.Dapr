@@ -32,12 +32,30 @@ services:
 
 
   recall-textlistapi-dapr:
-    command: ["./daprd",
-      "-app-id", "recall-textlistapi",
-      "-app-port", "80",
-      "-components-path", "/components",
-      "-config", "/configuration/recall-configuration.yaml"
-      ]
+    command: [ "./daprd",
+               "-app-id", "recall-textlistapi",
+               "-app-port", "80",
+               "-components-path", "/components",
+               "-config", "/configuration/recall-configuration.yaml" ]
+    volumes:
+      - "./dapr/components/:/components"
+      - "./dapr/configuration/:/configuration"
+
+
+  recall-listapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "35200:80"
+      - "50001"
+
+
+  recall-listapi-dapr:
+    command: [ "./daprd",
+               "-app-id", "recall-listapi",
+               "-app-port", "80",
+               "-components-path", "/components",
+               "-config", "/configuration/recall-configuration.yaml" ]
     volumes:
       - "./dapr/components/:/components"
       - "./dapr/configuration/:/configuration"
@@ -68,16 +86,6 @@ services:
       - "35107:80"
 
 
-  list.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
-    ports:
-      - "80"
-      - "443"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 volumes:
   recall-sqldata:
     external: false
