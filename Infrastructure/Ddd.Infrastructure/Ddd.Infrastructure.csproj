@@ -4,6 +4,8 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <AssemblyName>RecAll.Infrastructure.Ddd.Infrastructure</AssemblyName>
+        <RootNamespace>RecAll.Infrastructure.Ddd.Infrastructure</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
