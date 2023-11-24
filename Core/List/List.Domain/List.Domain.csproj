@@ -12,4 +12,9 @@
       <ProjectReference Include="..\..\..\Infrastructure\Ddd.Domain\Ddd.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="AggregateModels\ItemAggregate\" />
+      <Folder Include="AggregateModels\SetAggregate\" />
+    </ItemGroup>
+
 </Project>
