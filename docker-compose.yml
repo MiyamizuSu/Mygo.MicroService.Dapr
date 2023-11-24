@@ -34,7 +34,7 @@ services:
 
 
   recall-listapi:
-    image: ${DOCKER_REGISTRY-}listapi
+    image: ${DOCKER_REGISTRY-}recall-listapi
     build:
       context: .
       dockerfile: Core/List/List.Api/Dockerfile
