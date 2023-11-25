@@ -37,6 +37,25 @@ namespace RecAll.Core.List.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Items",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TypeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Items_listtypes_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "listtypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "lists",
                 columns: table => new
                 {
@@ -84,6 +103,11 @@ namespace RecAll.Core.List.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Items_TypeId",
+                table: "Items",
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_lists_TypeId",
                 table: "lists",
                 column: "TypeId");
@@ -102,6 +126,9 @@ namespace RecAll.Core.List.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Items");
+
             migrationBuilder.DropTable(
                 name: "sets");
 
