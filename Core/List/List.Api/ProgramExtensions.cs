@@ -1,9 +1,16 @@
+using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Dapr.Client;
 using Dapr.Extensions.Configuration;
+using Infrastructure.Api;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using RecAll.Core.List.Api.Infrastructure.AutofacModules;
+using RecAll.Core.List.Infrastructure;
 using Serilog;
+using TheSalLab.GeneralReturnValues;
 
 namespace RecAll.Core.List.Api;
 
@@ -36,7 +43,51 @@ public static class ProgramExtensions {
 
         builder.Host.UseSerilog();
     }
-    
+
     public static void AddCustomSwagger(this WebApplicationBuilder builder) =>
         builder.Services.AddSwaggerGen();
+
+    public static void
+        AddCustomHealthChecks(this WebApplicationBuilder builder) =>
+        builder.Services.AddHealthChecks()
+            .AddCheck("self", () => HealthCheckResult.Healthy()).AddDapr()
+            .AddSqlServer(
+                builder.Configuration["ConnectionStrings:ListContext"]!,
+                name: "ListDb-check", tags: new[] { "ListDb" }).AddUrlGroup(
+                new Uri(builder.Configuration["TextListHealthCheck"]),
+                "TextListHealthCheck", tags: new[] { "TextList" });
+
+    public static void AddCustomDatabase(this WebApplicationBuilder builder) {
+        builder.Services.AddDbContext<ListContext>(options => {
+            options.UseSqlServer(
+                builder.Configuration["ConnectionStrings:ListContext"],
+                sqlServerOptionsAction => {
+                    sqlServerOptionsAction.MigrationsAssembly(
+                        typeof(InitialFunctions).GetTypeInfo().Assembly
+                            .GetName().Name);
+                    sqlServerOptionsAction.EnableRetryOnFailure(15,
+                        TimeSpan.FromSeconds(30), null);
+                });
+        });
+    }
+
+    public static void AddInvalidModelStateResponseFactory(
+        this WebApplicationBuilder builder) {
+        builder.Services.AddOptions().Configure<ApiBehaviorOptions>(options => {
+            options.InvalidModelStateResponseFactory = context =>
+                new OkObjectResult(ServiceResult.CreateInvalidParameterResult(
+                        new ValidationProblemDetails(context.ModelState).Errors
+                            .Select(p =>
+                                $"{p.Key}: {string.Join(" / ", p.Value)}"))
+                    .ToServiceResultViewModel());
+        });
+    }
+
+    public static void
+        AddCustomControllers(this WebApplicationBuilder builder) =>
+        builder.Services.AddCors(options => {
+            options.AddPolicy("CorsPolicy",
+                builder => builder.SetIsOriginAllowed(host => true)
+                    .AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+        });
 }

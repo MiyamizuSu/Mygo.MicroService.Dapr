@@ -25,20 +25,14 @@ builder.AddCustomConfiguration();
 builder.AddCustomServiceProviderFactory();
 builder.AddCustomSerilog();
 builder.AddCustomSwagger();
+builder.AddCustomHealthChecks();
+builder.AddCustomDatabase();
+builder.AddInvalidModelStateResponseFactory();
+
+builder.Services.AddDaprClient();
+builder.AddCustomControllers(); 
 
 // TODO
-
-builder.Services.AddDbContext<ListContext>(options => {
-    options.UseSqlServer(builder.Configuration["ListContext"],
-        sqlServerOptionsAction => {
-            sqlServerOptionsAction.MigrationsAssembly(typeof(InitialFunctions)
-                .GetTypeInfo().Assembly.GetName().Name);
-            sqlServerOptionsAction.EnableRetryOnFailure(15,
-                TimeSpan.FromSeconds(30), null);
-        });
-});
-
-builder.Services.AddTransient<IIdentityService, MockIdentityService>();
 
 builder.Services.AddCors(options => {
     options.AddPolicy("CorsPolicy",
@@ -51,20 +45,6 @@ builder.Services
         options.Filters.Add(typeof(HttpGlobalExceptionFilter)))
     .AddJsonOptions(options =>
         options.JsonSerializerOptions.IncludeFields = true);
-
-builder.Services.AddOptions().Configure<ApiBehaviorOptions>(options => {
-    options.InvalidModelStateResponseFactory = context =>
-        new OkObjectResult(ServiceResult.CreateInvalidParameterResult(
-                new ValidationProblemDetails(context.ModelState).Errors.Select(
-                    p =>
-                        $"{p.Key}: {string.Join(" / ", p.Value)}"))
-            .ToServiceResultViewModel());
-});
-
-builder.Services.AddHealthChecks()
-    .AddCheck("self", () => HealthCheckResult.Healthy()).AddUrlGroup(
-        new Uri(builder.Configuration["TextListHealthCheck"]),
-        "TextListHealthCheck", tags: new[] { "TextList" });
 
 var app = builder.Build();
 
