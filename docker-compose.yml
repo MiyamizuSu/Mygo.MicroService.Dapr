@@ -47,7 +47,7 @@ services:
   
   
   recall-servicestatus:
-    image: ${DOCKER_REGISTRY-}servicestatus
+    image: recall-servicestatus
     build:
       context: .
       dockerfile: Infrastructure/ServiceStatus/Dockerfile
