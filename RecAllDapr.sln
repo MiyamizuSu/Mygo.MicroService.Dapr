@@ -54,8 +54,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "List.Api", "Core\List\List.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBus", "Infrastructure\EventBus\EventBus.csproj", "{25C78991-A9EF-420C-8212-409B8CA6FF61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBus.Dapr", "Infrastructure\EventBus.Dapr\EventBus.Dapr.csproj", "{F5291FC8-2AA1-42F7-BB77-4ADCFBF5BE9C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,10 +100,6 @@ Global
 		{25C78991-A9EF-420C-8212-409B8CA6FF61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25C78991-A9EF-420C-8212-409B8CA6FF61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25C78991-A9EF-420C-8212-409B8CA6FF61}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F5291FC8-2AA1-42F7-BB77-4ADCFBF5BE9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5291FC8-2AA1-42F7-BB77-4ADCFBF5BE9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5291FC8-2AA1-42F7-BB77-4ADCFBF5BE9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5291FC8-2AA1-42F7-BB77-4ADCFBF5BE9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,7 +117,6 @@ Global
 		{6C2B13BE-46D2-462B-B954-8D5A79B3258A} = {8D5E093D-117E-4217-BDE9-3D7C3495E82E}
 		{9C6D27BA-F55D-4FB4-AD10-DCFF907C34A7} = {8D5E093D-117E-4217-BDE9-3D7C3495E82E}
 		{25C78991-A9EF-420C-8212-409B8CA6FF61} = {F58B4BEB-1777-4EC2-953F-3B1057A89EB0}
-		{F5291FC8-2AA1-42F7-BB77-4ADCFBF5BE9C} = {F58B4BEB-1777-4EC2-953F-3B1057A89EB0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8EE0F31-116A-4077-B840-48940901FFE5}
