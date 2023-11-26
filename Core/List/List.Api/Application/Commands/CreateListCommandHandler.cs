@@ -1,7 +1,6 @@
 using MediatR;
 using RecAll.Core.List.Api.Infrastructure.Services;
 using RecAll.Core.List.Domain.AggregateModels.ListAggregate;
-using RecAll.Infrastructure;
 using TheSalLab.GeneralReturnValues;
 
 namespace RecAll.Core.List.Api.Application.Commands;
