@@ -7,7 +7,7 @@ public class SetQueryService : ISetQueryService {
     private readonly string _connectionString;
 
     public SetQueryService(IConfiguration configuration) {
-        _connectionString = configuration["ListContext"];
+        _connectionString = configuration["ConnectionStrings:ListContext"];
     }
 
 

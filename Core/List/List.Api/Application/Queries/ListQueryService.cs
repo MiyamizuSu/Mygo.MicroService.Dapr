@@ -7,7 +7,7 @@ public class ListQueryService : IListQueryService {
     private readonly string _connectionString;
 
     public ListQueryService(IConfiguration configuration) {
-        _connectionString = configuration["ListContext"];
+        _connectionString = configuration["ConnectionStrings:ListContext"];
     }
 
     public async Task<(IEnumerable<ListViewModel>, int)> ListAsync(int skip,
