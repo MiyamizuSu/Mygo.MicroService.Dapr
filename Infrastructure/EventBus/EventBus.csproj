@@ -8,4 +8,8 @@
         <RootNamespace>RecAll.Infrastructure.EventBus</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Dapr.Client" Version="1.10.0" />
+    </ItemGroup>
+
 </Project>
