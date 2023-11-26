@@ -34,7 +34,13 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\..\Infrastructure\EventBus\EventBus.csproj" />
+        <ProjectReference Include="..\..\..\Infrastructure\IntegrationEventLog\IntegrationEventLog.csproj" />
         <ProjectReference Include="..\List.Infrastructure\List.Infrastructure.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Infrastructure\Migrations\IntegrationEventLog\" />
     </ItemGroup>
 
 </Project>

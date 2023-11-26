@@ -5,6 +5,7 @@
 //
 // app.Run();
 
+using System.Data.Common;
 using System.Net;
 using System.Reflection;
 using Autofac;
@@ -16,11 +17,16 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using RecAll.Core.List.Api;
+using RecAll.Core.List.Api.Application.IntegrationEvents;
 using RecAll.Core.List.Api.Infrastructure;
 using RecAll.Core.List.Api.Infrastructure.AutofacModules;
 using RecAll.Core.List.Api.Infrastructure.Filters;
 using RecAll.Core.List.Api.Infrastructure.Services;
 using RecAll.Core.List.Infrastructure;
+using RecAll.Infrastructure.EventBus;
+using RecAll.Infrastructure.EventBus.Abstractions;
+using RecAll.Infrastructure.IntegrationEventLog;
+using RecAll.Infrastructure.IntegrationEventLog.Services;
 using Serilog;
 using TheSalLab.GeneralReturnValues;
 
@@ -58,7 +64,24 @@ try {
             });
     });
 
+    builder.Services.AddDbContext<IntegrationEventLogContext>(options => {
+        options.UseSqlServer(builder.Configuration["ListContext"],
+            sqlServerOptionsAction => {
+                sqlServerOptionsAction.MigrationsAssembly(
+                    typeof(InitialFunctions).GetTypeInfo().Assembly.GetName()
+                        .Name);
+                sqlServerOptionsAction.EnableRetryOnFailure(15,
+                    TimeSpan.FromSeconds(30), null);
+            });
+    });
+
     builder.Services.AddTransient<IIdentityService, MockIdentityService>();
+    builder.Services
+        .AddTransient<Func<DbConnection, IIntegrationEventLogService>>(_ =>
+            connection => new IntegrationEventLogService(connection));
+    builder.Services
+        .AddTransient<IListIntegrationEventService,
+            ListIntegrationEventService>();
 
     builder.Services.AddCors(options => {
         options.AddPolicy("CorsPolicy",
@@ -82,6 +105,8 @@ try {
                             p => $"{p.Key}: {string.Join(" / ", p.Value)}"))
                 .ToServiceResultViewModel());
     });
+
+    builder.Services.AddScoped<IEventBus, DaprEventBus>();
 
     builder.Services.AddHealthChecks()
         .AddCheck("self", () => HealthCheckResult.Healthy()).AddUrlGroup(
@@ -124,6 +149,9 @@ try {
             new ListContextSeed().SeedAsync(context, envInside, loggerInside)
                 .Wait();
         });
+
+    InitialFunctions.MigrateDbContext<IntegrationEventLogContext>(app.Services,
+        builder.Configuration, (_, _) => { });
 
     Log.Information("Starting web host ({ApplicationContext})...",
         InitialFunctions.AppName);
