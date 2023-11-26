@@ -73,7 +73,7 @@ public static class ProgramExtensions {
                 builder.Configuration["ConnectionStrings:ListContext"],
                 sqlServerOptionsAction => {
                     sqlServerOptionsAction.MigrationsAssembly(
-                        typeof(InitialFunctions).GetTypeInfo().Assembly
+                        typeof(ProgramExtensions).GetTypeInfo().Assembly
                             .GetName().Name);
                     sqlServerOptionsAction.EnableRetryOnFailure(15,
                         TimeSpan.FromSeconds(30), null);
