@@ -45,7 +45,7 @@ public class ListIntegrationEventService : IListIntegrationEventService {
         foreach (var logEvent in pendingLogEvents) {
             _logger.LogInformation(
                 "----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})",
-                logEvent.EventId, InitialFunctions.AppName,
+                logEvent.EventId, ProgramExtensions.AppName,
                 logEvent.IntegrationEvent);
 
             try {
@@ -57,7 +57,7 @@ public class ListIntegrationEventService : IListIntegrationEventService {
             } catch (Exception e) {
                 _logger.LogError(e,
                     "ERROR publishing integration event: {IntegrationEventId} from {AppName}",
-                    logEvent.EventId, InitialFunctions.AppName);
+                    logEvent.EventId, ProgramExtensions.AppName);
                 await _integrationEventLogService.MarkEventAsFailedAsync(
                     logEvent.EventId);
             }
