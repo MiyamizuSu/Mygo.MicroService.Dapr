@@ -7,7 +7,10 @@ using Infrastructure.Api;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Polly;
+using RecAll.Core.List.Api.Infrastructure;
 using RecAll.Core.List.Api.Infrastructure.AutofacModules;
+using RecAll.Core.List.Api.Infrastructure.Filters;
 using RecAll.Core.List.Infrastructure;
 using Serilog;
 using TheSalLab.GeneralReturnValues;
@@ -16,6 +19,13 @@ namespace RecAll.Core.List.Api;
 
 public static class ProgramExtensions {
     public static readonly string AppName = typeof(ProgramExtensions).Namespace;
+
+    public static void AddCustomCors(this WebApplicationBuilder builder) =>
+        builder.Services.AddCors(options => {
+            options.AddPolicy("CorsPolicy",
+                builder => builder.SetIsOriginAllowed(host => true)
+                    .AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+        });
 
     public static void AddCustomServiceProviderFactory(
         this WebApplicationBuilder builder) {
@@ -85,9 +95,47 @@ public static class ProgramExtensions {
 
     public static void
         AddCustomControllers(this WebApplicationBuilder builder) =>
-        builder.Services.AddCors(options => {
-            options.AddPolicy("CorsPolicy",
-                builder => builder.SetIsOriginAllowed(host => true)
-                    .AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+        builder.Services
+            .AddControllers(options =>
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter)))
+            .AddJsonOptions(options =>
+                options.JsonSerializerOptions.IncludeFields = true);
+
+    public static void UseCustomSwagger(this WebApplication app) {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    public static void UserCustomCors(this WebApplication app) {
+        app.UseCors("CorsPolicy");
+    }
+
+    public static void ApplyDatabaseMigration(this WebApplication app) {
+        // Apply database migration automatically. Note that this approach is not
+        // recommended for production scenarios. Consider generating SQL scripts from
+        // migrations instead.
+        using var scope = app.Services.CreateScope();
+
+        var retryPolicy = CreateRetryPolicy();
+        var listContext =
+            scope.ServiceProvider.GetRequiredService<ListContext>();
+        var listContextSeedLogger = scope.ServiceProvider
+            .GetRequiredService<ILogger<ListContextSeed>>();
+
+        retryPolicy.Execute(() => {
+            listContext.Database.Migrate();
+            new ListContextSeed().SeedAsync(listContext, listContextSeedLogger)
+                .Wait();
         });
+    }
+
+    private static Policy CreateRetryPolicy() {
+        return Policy.Handle<Exception>().WaitAndRetryForever(
+            sleepDurationProvider: _ => TimeSpan.FromSeconds(5),
+            onRetry: (exception, retry, _) => {
+                Console.WriteLine(
+                    "Exception {0} with message {1} detected during database migration (retry attempt {2})",
+                    exception.GetType().Name, exception.Message, retry);
+            });
+    }
 }

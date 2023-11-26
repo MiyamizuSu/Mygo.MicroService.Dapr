@@ -5,7 +5,7 @@ using RecAll.Infrastructure.Ddd.Domain.SeedWork;
 namespace RecAll.Core.List.Api.Infrastructure;
 
 public class ListContextSeed {
-    public async Task SeedAsync(ListContext context, IWebHostEnvironment env,
+    public async Task SeedAsync(ListContext context,
         ILogger<ListContextSeed> logger, int retry = 0) {
         var retryForAvailability = retry;
         try {
@@ -19,7 +19,7 @@ public class ListContextSeed {
                 logger.LogError(e,
                     "EXCEPTION ERROR while migrating {DbContextName}",
                     nameof(ListContext));
-                await SeedAsync(context, env, logger, retryForAvailability);
+                await SeedAsync(context, logger, retryForAvailability);
             }
         }
     }
