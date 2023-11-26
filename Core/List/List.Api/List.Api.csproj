@@ -12,13 +12,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="7.0.0" />
-        <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="7.1.0" />
-        <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="7.0.0" />
+        <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="7.0.0"/>
+        <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="7.1.0"/>
+        <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="7.0.0"/>
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0"/>
-        <PackageReference Include="FluentValidation" Version="11.8.1" />
-        <PackageReference Include="Dapr.AspNetCore" Version="1.10.0" />
-        <PackageReference Include="Dapr.Extensions.Configuration" Version="1.10.0" />
+        <PackageReference Include="Dapr.AspNetCore" Version="1.10.0"/>
+        <PackageReference Include="Dapr.Extensions.Configuration" Version="1.10.0"/>
+        <PackageReference Include="FluentValidation" Version="11.8.1"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.14">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -28,25 +28,24 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5"/>
-        <PackageReference Include="Polly" Version="8.2.0" />
+        <PackageReference Include="Polly" Version="8.2.0"/>
         <PackageReference Include="Serilog.AspNetCore" Version="6.1.0"/>
         <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.2"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
         <PackageReference Include="TheSalLab.GeneralReturnValues" Version="1.0.0"/>
-        <PackageReference Include="Dapr.AspNetCore" Version="1.10.0" />
-        <PackageReference Include="Dapr.Extensions.Configuration" Version="1.10.0" />
-        <PackageReference Include="Dapper" Version="2.1.24" />
-        <PackageReference Include="FluentValidation" Version="11.8.1" />
+        <PackageReference Include="Dapr.AspNetCore" Version="1.10.0"/>
+        <PackageReference Include="Dapr.Extensions.Configuration" Version="1.10.0"/>
+        <PackageReference Include="Dapper" Version="2.1.24"/>
+        <PackageReference Include="FluentValidation" Version="11.8.1"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Infrastructure\Infrastructure.Api\Infrastructure.Api.csproj" />
-        <ProjectReference Include="..\..\..\Infrastructure\Infrastructure.Api\Infrastructure.Api.csproj" />
+        <ProjectReference Include="..\..\..\Infrastructure\Infrastructure.Api\Infrastructure.Api.csproj"/>
         <ProjectReference Include="..\List.Infrastructure\List.Infrastructure.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Infrastructure\Migrations\List\" />
+        <Folder Include="Infrastructure\Migrations\List\"/>
     </ItemGroup>
 
 </Project>
