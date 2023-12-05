@@ -17,7 +17,8 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item> {
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .HasColumnName("TypeId").IsRequired();
 
-        builder.HasOne(p => p.Type).WithMany().HasForeignKey("_typeId");
+        builder.HasOne(p => p.Type).WithMany().HasForeignKey("_typeId")
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.Property<int>("_setId")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
