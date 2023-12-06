@@ -24,6 +24,4 @@ public class
             request.GetType().Name, response);
         return response;
     }
-
-    // TODO register
 }
