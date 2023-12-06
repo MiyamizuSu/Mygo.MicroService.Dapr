@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Infrastructure.Api.HttpClient;
 using MediatR;
+using RecAll.Core.List.Api.Application.IntegrationEvents;
 using RecAll.Core.List.Api.Application.Queries;
 using RecAll.Core.List.Api.Infrastructure.Services;
 using RecAll.Core.List.Domain.AggregateModels.ItemAggregate;
@@ -15,11 +16,13 @@ public class CreateItemCommandHandler : IRequestHandler<CreateItemCommand,
     private readonly IItemRepository _itemRepository;
     private readonly IContribUrlService _contribUrlService;
     private readonly HttpClient _httpClient;
+    private readonly IListIntegrationEventService _listIntegrationEventService;
 
     public CreateItemCommandHandler(ISetQueryService setQueryService,
         IIdentityService identityService, IItemRepository itemRepository,
         IContribUrlService contribUrlService,
-        IHttpClientFactory httpClientFactory) {
+        IHttpClientFactory httpClientFactory,
+        IListIntegrationEventService listIntegrationEventService) {
         _setQueryService = setQueryService ??
             throw new ArgumentNullException(nameof(setQueryService));
         _identityService = identityService ??
@@ -28,6 +31,9 @@ public class CreateItemCommandHandler : IRequestHandler<CreateItemCommand,
             throw new ArgumentNullException(nameof(itemRepository));
         _contribUrlService = contribUrlService;
         _httpClient = httpClientFactory.CreateDefaultClient();
+        _listIntegrationEventService = listIntegrationEventService ??
+            throw new ArgumentNullException(
+                nameof(listIntegrationEventService));
     }
 
     public async Task<ServiceResult> Handle(CreateItemCommand command,
@@ -73,6 +79,12 @@ public class CreateItemCommandHandler : IRequestHandler<CreateItemCommand,
         if (!saved) {
             return ServiceResult.CreateFailedResult();
         }
+
+        var itemIdAssignedIntegrationEvent =
+            new ItemIdAssignedIntegrationEvent(set.TypeId, contribResult.Result,
+                item.Id);
+        await _listIntegrationEventService.AddAndSaveEventAsync(
+            itemIdAssignedIntegrationEvent);
 
         return await _itemRepository.UnitOfWork.SaveEntitiesAsync(
             cancellationToken)
