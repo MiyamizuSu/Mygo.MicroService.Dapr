@@ -404,3 +404,5 @@ riderModule.iml
 /_ReSharper.Caches/
 
 .idea/
+keys/
+*.jwk

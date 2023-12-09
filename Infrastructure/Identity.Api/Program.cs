@@ -1,6 +1,16 @@
+using RecAll.Infrastructure.Identity.Api;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var services = builder.Services;
+
+services.AddIdentityServer()
+    .AddInMemoryIdentityResources(Config.IdentityResources)
+    .AddInMemoryApiScopes(Config.ApiScopes).AddInMemoryClients(Config.Clients)
+    .AddDeveloperSigningCredential();
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.UseIdentityServer();
 
 app.Run();
