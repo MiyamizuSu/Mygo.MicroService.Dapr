@@ -6,7 +6,7 @@ using RecAll.Infrastructure.EventBus.Events;
 namespace RecAll.Infrastructure.EventBus;
 
 public class DaprEventBus : IEventBus {
-    private const string PubSubName = "recall-pubsub";
+    public const string PubSubName = "recall-pubsub";
 
     private readonly DaprClient _dapr;
     private readonly ILogger _logger;
