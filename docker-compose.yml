@@ -72,3 +72,10 @@ services:
       context: .
       dockerfile: Infrastructure/ServiceStatus/Dockerfile
 
+
+  recall-identity.api:
+    image: recall-identityapi
+    build:
+      context: .
+      dockerfile: Infrastructure/Identity.Api/Dockerfile
+

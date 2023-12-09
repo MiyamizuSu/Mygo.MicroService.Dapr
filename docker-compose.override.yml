@@ -92,6 +92,14 @@ services:
       - "35107:80"
 
 
+  recall-identity.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "35105:80"
+
+
 volumes:
   recall-sqldata:
     external: false
+
