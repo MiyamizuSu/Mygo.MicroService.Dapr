@@ -4,9 +4,11 @@ using Dapr.Extensions.Configuration;
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Identity.Api;
 using Infrastructure.Api;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using RecAll.Infrastructure.Identity.Api.Data;
+using RecAll.Infrastructure.Identity.Api.Models;
 
 namespace RecAll.Infrastructure.Identity.Api;
 
@@ -31,14 +33,37 @@ public static class ProgramExtensions {
             builder.Configuration["ConnectionStrings:IdentityContext"];
         var migrationAssemblyString = typeof(ProgramExtensions).GetTypeInfo()
             .Assembly.GetName().Name;
-        builder.Services.AddIdentityServer().AddTestUsers(TestUsers.Users)
-            .AddConfigurationStore(o => o.ConfigureDbContext = ob =>
-                ob.UseSqlServer(connectionString,
-                    sql => sql.MigrationsAssembly(migrationAssemblyString)))
-            .AddOperationalStore(o => o.ConfigureDbContext = ob =>
-                ob.UseSqlServer(connectionString,
-                    sql => sql.MigrationsAssembly(migrationAssemblyString)))
-            .AddDeveloperSigningCredential();
+
+        builder.Services.AddDbContext<ApplicationDbContext>(options => {
+            options.UseSqlServer(connectionString, sqlServerOptionsAction => {
+                sqlServerOptionsAction.MigrationsAssembly(
+                    migrationAssemblyString);
+                sqlServerOptionsAction.EnableRetryOnFailure(15,
+                    TimeSpan.FromSeconds(30), null);
+            });
+        });
+
+        builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
+        builder.Services.AddIdentityServer()
+            .AddAspNetIdentity<ApplicationUser>().AddConfigurationStore(
+                options => {
+                    options.ConfigureDbContext = optionsBuilder =>
+                        optionsBuilder.UseSqlServer(connectionString, sql => {
+                            sql.EnableRetryOnFailure(15,
+                                TimeSpan.FromSeconds(30), null);
+                            sql.MigrationsAssembly(migrationAssemblyString);
+                        });
+                }).AddOperationalStore(options => {
+                options.ConfigureDbContext = optionsBuilder =>
+                    optionsBuilder.UseSqlServer(connectionString, sql => {
+                        sql.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30),
+                            null);
+                        sql.MigrationsAssembly(migrationAssemblyString);
+                    });
+            }).AddDeveloperSigningCredential();
     }
 
     public static async Task ApplyDatabaseMigrationAsync(
