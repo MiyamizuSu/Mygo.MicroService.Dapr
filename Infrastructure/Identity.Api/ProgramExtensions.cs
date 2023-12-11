@@ -77,5 +77,10 @@ public static class ProgramExtensions {
         configurationDbContext.Database.Migrate();
         await new ConfigurationDbContextSeed().SeedAsync(configurationDbContext,
             app.Configuration);
+
+        var applicationDbContext = serviceScope.ServiceProvider
+            .GetRequiredService<ApplicationDbContext>();
+        applicationDbContext.Database.Migrate();
+        // await new ApplicationDbContextSeed().SeedAsync(applicationDbContext)
     }
 }

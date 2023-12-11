@@ -12,8 +12,6 @@ public class ApplicationDbContextSeed {
         int retry = 0) {
         var retryForAvailability = retry;
         try {
-            var contentRootPath = env.ContentRootPath;
-
             if (!context.Users.Any()) {
                 context.Users.AddRange(GetDefaultUser());
                 await context.SaveChangesAsync();
