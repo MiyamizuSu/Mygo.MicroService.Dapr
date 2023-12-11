@@ -2,6 +2,7 @@ using System.Reflection;
 using Dapr.Client;
 using Dapr.Extensions.Configuration;
 using Duende.IdentityServer.EntityFramework.DbContexts;
+using Duende.IdentityServer.Services;
 using Identity.Api;
 using Infrastructure.Api;
 using Microsoft.AspNetCore.Identity;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using RecAll.Infrastructure.Identity.Api.Data;
 using RecAll.Infrastructure.Identity.Api.Models;
+using RecAll.Infrastructure.Identity.Api.Services;
 
 namespace RecAll.Infrastructure.Identity.Api;
 
@@ -29,6 +31,10 @@ public static class ProgramExtensions {
 
     public static void AddCustomIdentityServer(
         this WebApplicationBuilder builder) {
+        builder.Services
+            .AddTransient<ILoginService<ApplicationUser>, EFLoginService>();
+        builder.Services.AddTransient<IRedirectService, RedirectService>();
+
         var connectionString =
             builder.Configuration["ConnectionStrings:IdentityContext"];
         var migrationAssemblyString = typeof(ProgramExtensions).GetTypeInfo()
@@ -47,13 +53,16 @@ public static class ProgramExtensions {
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-        builder.Services.AddIdentityServer()
-            .AddAspNetIdentity<ApplicationUser>().AddConfigurationStore(
+        builder.Services.AddIdentityServer(x => {
+                x.IssuerUri = "null";
+                x.Authentication.CookieLifetime = TimeSpan.FromHours(2);
+            }).AddAspNetIdentity<ApplicationUser>().AddConfigurationStore(
                 options => {
                     options.ConfigureDbContext = optionsBuilder =>
                         optionsBuilder.UseSqlServer(connectionString, sql => {
                             sql.EnableRetryOnFailure(15,
-                                TimeSpan.FromSeconds(30), null);
+                                TimeSpan.FromSeconds(30),
+                                null);
                             sql.MigrationsAssembly(migrationAssemblyString);
                         });
                 }).AddOperationalStore(options => {
@@ -63,7 +72,8 @@ public static class ProgramExtensions {
                             null);
                         sql.MigrationsAssembly(migrationAssemblyString);
                     });
-            }).AddDeveloperSigningCredential();
+            }).AddDeveloperSigningCredential().Services
+            .AddTransient<IProfileService, ProfileService>();
     }
 
     public static async Task ApplyDatabaseMigrationAsync(
