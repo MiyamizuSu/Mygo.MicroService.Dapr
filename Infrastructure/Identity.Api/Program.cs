@@ -1,9 +1,12 @@
+using HealthChecks.UI.Client;
+using Infrastructure.Api;
 using RecAll.Infrastructure.Identity.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddCustomConfiguration();
 builder.AddCustomHealthChecks();
+builder.Services.AddDaprClient();
 builder.Services.AddRazorPages();
 builder.AddCustomIdentityServer();
 
@@ -16,6 +19,8 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 app.MapRazorPages();
+app.MapCustomHealthChecks(
+    responseWriter: UIResponseWriter.WriteHealthCheckUIResponse);
 
 await app.ApplyDatabaseMigrationAsync();
 app.Run();
