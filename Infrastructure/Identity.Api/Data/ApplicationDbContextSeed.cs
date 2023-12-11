@@ -8,7 +8,6 @@ public class ApplicationDbContextSeed {
         new PasswordHasher<ApplicationUser>();
 
     public async Task SeedAsync(ApplicationDbContext context,
-        IWebHostEnvironment env, ILogger<ApplicationDbContextSeed> logger,
         int retry = 0) {
         var retryForAvailability = retry;
         try {
@@ -19,10 +18,7 @@ public class ApplicationDbContextSeed {
         } catch (Exception exception) {
             if (retryForAvailability < 10) {
                 retryForAvailability++;
-                logger.LogError(exception,
-                    "EXCEPTION ERROR while migrating {DbContextName}",
-                    nameof(ApplicationDbContext));
-                await SeedAsync(context, env, logger, retryForAvailability);
+                await SeedAsync(context, retryForAvailability);
             }
         }
     }
