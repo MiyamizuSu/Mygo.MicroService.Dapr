@@ -3,7 +3,6 @@ using Dapr.Client;
 using Dapr.Extensions.Configuration;
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.Services;
-using Identity.Api;
 using Infrastructure.Api;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

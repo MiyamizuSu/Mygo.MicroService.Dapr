@@ -1,5 +1,4 @@
 using Dapr;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecAll.Contrib.TextList.Api.IntegrationEvents;
