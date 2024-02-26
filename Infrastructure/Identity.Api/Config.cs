@@ -16,6 +16,9 @@ public class Config {
                 UserClaims = { JwtClaimTypes.Audience }
             }
         };
+    
+    public static IEnumerable<ApiResource> ApiResources =>
+        new List<ApiResource> { };
 
     public static IEnumerable<Client>
         GetClients(Dictionary<string, string> clientUrlDict) =>
