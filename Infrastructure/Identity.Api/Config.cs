@@ -8,5 +8,8 @@ public class Config {
 
     public static IEnumerable<ApiScope> ApiScopes => new List<ApiScope> { };
 
+    public static IEnumerable<ApiResource> ApiResources =>
+        new List<ApiResource> { };
+
     public static IEnumerable<Client> Clients => new List<Client> { };
 }
