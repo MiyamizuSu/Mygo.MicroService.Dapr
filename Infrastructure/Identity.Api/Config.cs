@@ -1,4 +1,5 @@
 using Duende.IdentityServer.Models;
+using IdentityModel;
 
 namespace RecAll.Infrastructure.Identity.Api;
 
@@ -10,7 +11,10 @@ public class Config {
 
     public static IEnumerable<ApiScope> ApiScopes =>
         new List<ApiScope> {
-            new("List", "List"), new("TextList", "Text List")
+            new("List", "List") { UserClaims = { JwtClaimTypes.Audience } },
+            new("TextList", "Text List") {
+                UserClaims = { JwtClaimTypes.Audience }
+            }
         };
 
     public static IEnumerable<Client>
