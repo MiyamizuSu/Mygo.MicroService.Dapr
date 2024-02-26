@@ -16,9 +16,16 @@ public class Config {
                 UserClaims = { JwtClaimTypes.Audience }
             }
         };
-    
+
     public static IEnumerable<ApiResource> ApiResources =>
-        new List<ApiResource> { };
+        new List<ApiResource> {
+            new("List", "List") {
+                Scopes = { "List" }, UserClaims = { JwtClaimTypes.Audience }
+            },
+            new("TextList", "Text List") {
+                Scopes = { "TextList" }, UserClaims = { JwtClaimTypes.Audience }
+            }
+        };
 
     public static IEnumerable<Client>
         GetClients(Dictionary<string, string> clientUrlDict) =>
