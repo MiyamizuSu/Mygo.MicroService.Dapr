@@ -1,10 +1,14 @@
-﻿using Dapr.Client;
+﻿using System.IdentityModel.Tokens.Jwt;
+using Dapr.Client;
 using Dapr.Extensions.Configuration;
 using Infrastructure.Api;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.OpenApi.Models;
 using Polly;
+using RecAll.Contrib.TextList.Api.Filters;
 using RecAll.Contrib.TextList.Api.Services;
 using Serilog;
 using TheSalLab.GeneralReturnValues;
@@ -31,31 +35,75 @@ public static class ProgramExtensions {
         builder.Host.UseSerilog();
     }
 
-    public static void AddCustomSwagger(this WebApplicationBuilder builder) =>
-        builder.Services.AddSwaggerGen();
+    public static void AddCustomSwagger(this WebApplicationBuilder builder) {
+        builder.Services.AddSwaggerGen(options => {
+            options.AddSecurityDefinition("oauth2",
+                new OpenApiSecurityScheme {
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows {
+                        Implicit = new OpenApiOAuthFlow {
+                            AuthorizationUrl =
+                                new Uri(
+                                    $"{builder.Configuration["IdentityServer"]}/connect/authorize"),
+                            TokenUrl =
+                                new Uri(
+                                    $"{builder.Configuration["IdentityServer"]}/connect/token"),
+                            Scopes = new Dictionary<string, string> {
+                                ["TextList"] = "TextList",
+                            }
+                        }
+                    }
+                });
+
+            options.OperationFilter<AuthorizeCheckOperationFilter>();
+        });
+    }
 
     public static void
         AddCustomHealthChecks(this WebApplicationBuilder builder) =>
         builder.Services.AddHealthChecks()
             .AddCheck("self", () => HealthCheckResult.Healthy()).AddDapr()
-            .AddSqlServer(builder.Configuration["ConnectionStrings:TextListContext"]!,
-                name: "TextListDb-check", tags: new[] { "TextListDb" });
+            .AddSqlServer(
+                builder.Configuration["ConnectionStrings:TextListContext"]!,
+                name: "TextListDb-check", tags: new[] { "TextListDb" })
+            .AddUrlGroup(
+                new Uri(builder.Configuration["IdentityServerHealthCheck"]),
+                "IdentityServerHealthCheck", tags: new[] { "IdentityServer" });
 
 
     public static void UseCustomSwagger(this WebApplication app) {
         app.UseSwagger();
-        app.UseSwaggerUI();
+        app.UseSwaggerUI(options => {
+            options.OAuthClientId("TextListApiSwaggerUI");
+            options.OAuthAppName("TextListApiSwaggerUI");
+        });
     }
 
     public static void AddCustomApplicationServices(
         this WebApplicationBuilder builder) {
-        builder.Services.AddScoped<IIdentityService, MockIdentityService>();
+        builder.Services.AddScoped<IIdentityService, IdentityService>();
     }
 
     public static void AddCustomDatabase(this WebApplicationBuilder builder) {
         builder.Services.AddDbContext<TextListContext>(options =>
             options.UseSqlServer(
                 builder.Configuration["ConnectionStrings:TextListContext"]));
+    }
+
+    public static void AddCustomIdentityService(
+        this WebApplicationBuilder builder) {
+        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+        var identityServerUrl = builder.Configuration["IdentityServer"];
+        builder.Services.AddAuthentication(options => {
+            options.DefaultAuthenticateScheme =
+                JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme =
+                JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options => {
+            options.Authority = identityServerUrl;
+            options.RequireHttpsMetadata = false;
+            options.Audience = "TextList";
+        });
     }
 
     public static void ApplyDatabaseMigration(this WebApplication app) {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecAll.Contrib.TextList.Api.Commands;
 using RecAll.Contrib.TextList.Api.Models;
@@ -9,6 +10,7 @@ using TheSalLab.GeneralReturnValues;
 namespace RecAll.Contrib.TextList.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("[controller]")]
 public class ItemController {
     private readonly TextListContext _textListContext;
