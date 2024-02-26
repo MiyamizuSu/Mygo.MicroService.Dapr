@@ -15,7 +15,7 @@ namespace RecAll.Core.List.Api.Infrastructure.AutofacModules;
 
 public class ApplicationModule : Module {
     protected override void Load(ContainerBuilder builder) {
-        builder.RegisterType<MockIdentityService>().As<IIdentityService>()
+        builder.RegisterType<IdentityService>().As<IIdentityService>()
             .InstancePerLifetimeScope();
         builder.RegisterType<ContribUrlService>().As<IContribUrlService>()
             .InstancePerLifetimeScope();

@@ -7,6 +7,7 @@
 
 using HealthChecks.UI.Client;
 using Infrastructure.Api;
+using Infrastructure.Api.HttpClient;
 using RecAll.Core.List.Api;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +18,9 @@ builder.AddCustomServiceProviderFactory();
 builder.AddCustomSerilog();
 builder.AddCustomSwagger();
 builder.AddCustomHealthChecks();
+builder.AddCustomHttpClient();
 builder.AddCustomDatabase();
+builder.AddCustomIdentityService();
 builder.AddInvalidModelStateResponseFactory();
 
 builder.Services.AddDaprClient();

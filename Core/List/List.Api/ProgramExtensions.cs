@@ -1,12 +1,15 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Dapr.Client;
 using Dapr.Extensions.Configuration;
 using Infrastructure.Api;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.OpenApi.Models;
 using Polly;
 using RecAll.Core.List.Api.Infrastructure;
 using RecAll.Core.List.Api.Infrastructure.AutofacModules;
@@ -56,12 +59,36 @@ public static class ProgramExtensions {
     }
 
     public static void AddCustomSwagger(this WebApplicationBuilder builder) =>
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(options => {
+            options.AddSecurityDefinition("oauth2",
+                new OpenApiSecurityScheme {
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows {
+                        Implicit = new OpenApiOAuthFlow {
+                            AuthorizationUrl =
+                                new Uri(
+                                    $"{builder.Configuration["IdentityServer"]}/connect/authorize"),
+                            TokenUrl =
+                                new Uri(
+                                    $"{builder.Configuration["IdentityServer"]}/connect/token"),
+                            Scopes = new Dictionary<string, string> {
+                                ["List"] = "List",
+                                ["TextList"] = "TextList"
+                            }
+                        }
+                    }
+                });
+
+            options.OperationFilter<AuthorizeCheckOperationFilter>();
+        });
 
     public static void
         AddCustomHealthChecks(this WebApplicationBuilder builder) =>
         builder.Services.AddHealthChecks()
             .AddCheck("self", () => HealthCheckResult.Healthy()).AddDapr()
+            .AddUrlGroup(
+                new Uri(builder.Configuration["IdentityServerHealthCheck"]),
+                "IdentityServerHealthCheck", tags: new[] { "IdentityServer" })
             .AddSqlServer(
                 builder.Configuration["ConnectionStrings:ListContext"]!,
                 name: "ListDb-check", tags: new[] { "ListDb" }).AddUrlGroup(
@@ -94,6 +121,22 @@ public static class ProgramExtensions {
         });
     }
 
+    public static void AddCustomIdentityService(
+        this WebApplicationBuilder builder) {
+        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+        var identityServerUrl = builder.Configuration["IdentityServer"];
+        builder.Services.AddAuthentication(options => {
+            options.DefaultAuthenticateScheme =
+                JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme =
+                JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options => {
+            options.Authority = identityServerUrl;
+            options.RequireHttpsMetadata = false;
+            options.Audience = "List";
+        });
+    }
+
     public static void AddInvalidModelStateResponseFactory(
         this WebApplicationBuilder builder) {
         builder.Services.AddOptions().Configure<ApiBehaviorOptions>(options => {
@@ -116,7 +159,10 @@ public static class ProgramExtensions {
 
     public static void UseCustomSwagger(this WebApplication app) {
         app.UseSwagger();
-        app.UseSwaggerUI();
+        app.UseSwaggerUI(options => {
+            options.OAuthClientId("ListApiSwaggerUI");
+            options.OAuthAppName("ListApiSwaggerUI");
+        });
     }
 
     public static void UserCustomCors(this WebApplication app) {
