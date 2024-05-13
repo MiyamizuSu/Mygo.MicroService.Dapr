@@ -115,7 +115,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
     ports:
-      - "8080"
+      - "6992:8080"
+      - "50001"
   
   recall-maskedtestlistapi-dapr:
     command: [ "./daprd",

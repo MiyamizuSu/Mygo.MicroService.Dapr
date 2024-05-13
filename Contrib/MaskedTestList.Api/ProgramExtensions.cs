@@ -6,6 +6,17 @@ namespace RecAll.Contrib.MaskedTestList.Api;
 
 public static class ProgramExtensions
 {
+    public static void addCustomSwagger(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddSwaggerGen();
+    }
+
+    public static void useCustomSwagger(this WebApplication app)
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+    
     public static void AddCustomDatabase(this WebApplicationBuilder builder) {
         builder.Services.AddDbContext<MaskedTextListContext>(options =>
             options.UseSqlServer(

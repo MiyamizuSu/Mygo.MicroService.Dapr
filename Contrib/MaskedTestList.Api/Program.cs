@@ -8,9 +8,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Configuration.AddDaprSecretStore("recall-secretstore", new DaprClientBuilder().Build());
+builder.Services.AddControllers();
 // Configure the HTTP request pipeline.
 builder.AddCustomDatabase();
+builder.addCustomSwagger();
 var app = builder.Build();
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.useCustomSwagger();
+    app.MapGet("/", () => Results.LocalRedirect("~/swagger"));
+}
+app.MapControllers();
 app.ApplyDatabaseMigration();
 app.Run();   
 
