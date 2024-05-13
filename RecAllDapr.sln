@@ -20,9 +20,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dapr", "dapr", "{129077C6-9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", "{418B7B87-6D62-4AFD-93DD-11FC3C572C6E}"
 	ProjectSection(SolutionItems) = preProject
+		dapr\components\recall-pubsub.yaml = dapr\components\recall-pubsub.yaml
 		dapr\components\recall-secrets.json = dapr\components\recall-secrets.json
 		dapr\components\recall-secretstore.yaml = dapr\components\recall-secretstore.yaml
-		dapr\components\recall-pubsub.yaml = dapr\components\recall-pubsub.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "configuration", "configuration", "{423A0285-DD78-4DE5-96F0-458FFAD962B8}"
@@ -35,29 +35,31 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 		Infrastructure\envoy.yaml = Infrastructure\envoy.yaml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Api", "Infrastructure\Infrastructure.Api\Infrastructure.Api.csproj", "{5E3CA28A-38E2-46F7-B192-A853719E477B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Api", "Infrastructure\Infrastructure.Api\Infrastructure.Api.csproj", "{5E3CA28A-38E2-46F7-B192-A853719E477B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStatus", "Infrastructure\ServiceStatus\ServiceStatus.csproj", "{AAA53E67-1163-4EB4-AFFB-2FC19D63FCD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceStatus", "Infrastructure\ServiceStatus\ServiceStatus.csproj", "{AAA53E67-1163-4EB4-AFFB-2FC19D63FCD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ddd.Domain", "Infrastructure\Ddd.Domain\Ddd.Domain.csproj", "{DCD43905-C1DE-434A-BDCC-E71680934AA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ddd.Domain", "Infrastructure\Ddd.Domain\Ddd.Domain.csproj", "{DCD43905-C1DE-434A-BDCC-E71680934AA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ddd.Infrastructure", "Infrastructure\Ddd.Infrastructure\Ddd.Infrastructure.csproj", "{C816DC0A-21B3-42AB-8E37-5CB7AF566484}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ddd.Infrastructure", "Infrastructure\Ddd.Infrastructure\Ddd.Infrastructure.csproj", "{C816DC0A-21B3-42AB-8E37-5CB7AF566484}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{45EE50AD-141C-4DBB-BA7C-64181802F851}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "List", "List", "{8D5E093D-117E-4217-BDE9-3D7C3495E82E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "List.Domain", "Core\List\List.Domain\List.Domain.csproj", "{DCCB625B-E7C3-4F2B-9BC2-B582502E3305}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "List.Domain", "Core\List\List.Domain\List.Domain.csproj", "{DCCB625B-E7C3-4F2B-9BC2-B582502E3305}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "List.Infrastructure", "Core\List\List.Infrastructure\List.Infrastructure.csproj", "{6C2B13BE-46D2-462B-B954-8D5A79B3258A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "List.Infrastructure", "Core\List\List.Infrastructure\List.Infrastructure.csproj", "{6C2B13BE-46D2-462B-B954-8D5A79B3258A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "List.Api", "Core\List\List.Api\List.Api.csproj", "{9C6D27BA-F55D-4FB4-AD10-DCFF907C34A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "List.Api", "Core\List\List.Api\List.Api.csproj", "{9C6D27BA-F55D-4FB4-AD10-DCFF907C34A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBus", "Infrastructure\EventBus\EventBus.csproj", "{9ED6013D-8817-409E-91A9-6115831EE802}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus", "Infrastructure\EventBus\EventBus.csproj", "{9ED6013D-8817-409E-91A9-6115831EE802}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationEventLog", "Infrastructure\IntegrationEventLog\IntegrationEventLog.csproj", "{FC991D6D-F051-493C-916B-EB0E4385BD5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationEventLog", "Infrastructure\IntegrationEventLog\IntegrationEventLog.csproj", "{FC991D6D-F051-493C-916B-EB0E4385BD5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Api", "Infrastructure\Identity.Api\Identity.Api.csproj", "{05F081D3-F79E-4E53-B71A-6418C68EF852}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Api", "Infrastructure\Identity.Api\Identity.Api.csproj", "{05F081D3-F79E-4E53-B71A-6418C68EF852}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaskedTestList.Api", "Contrib\MaskedTestList.Api\MaskedTestList.Api.csproj", "{A9950CD1-F201-4000-B403-A6F7CF8E26C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +115,10 @@ Global
 		{05F081D3-F79E-4E53-B71A-6418C68EF852}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05F081D3-F79E-4E53-B71A-6418C68EF852}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05F081D3-F79E-4E53-B71A-6418C68EF852}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9950CD1-F201-4000-B403-A6F7CF8E26C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9950CD1-F201-4000-B403-A6F7CF8E26C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9950CD1-F201-4000-B403-A6F7CF8E26C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9950CD1-F201-4000-B403-A6F7CF8E26C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -132,6 +138,7 @@ Global
 		{9ED6013D-8817-409E-91A9-6115831EE802} = {F58B4BEB-1777-4EC2-953F-3B1057A89EB0}
 		{FC991D6D-F051-493C-916B-EB0E4385BD5B} = {F58B4BEB-1777-4EC2-953F-3B1057A89EB0}
 		{05F081D3-F79E-4E53-B71A-6418C68EF852} = {F58B4BEB-1777-4EC2-953F-3B1057A89EB0}
+		{A9950CD1-F201-4000-B403-A6F7CF8E26C6} = {65D66A8A-232C-42FF-85E8-100A287D98D3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8EE0F31-116A-4077-B840-48940901FFE5}

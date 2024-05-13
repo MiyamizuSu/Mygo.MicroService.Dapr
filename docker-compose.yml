@@ -85,3 +85,16 @@ services:
     network_mode: "service:recall-identityapi"
     depends_on:
       - recall-identityapi
+  
+  
+  recall-maskedtestlistapi:
+    image: recall-maskedtestlistapi
+    build:
+      context: .
+      dockerfile: Contrib/MaskedTestList.Api/Dockerfile
+      
+  recall-maskedtestlistapi-dapr:
+    image: "daprio/daprd:1.9.4"
+    network_mode: "service:recall-maskedtestlistapi"
+    depends_on:
+      - recall-maskedtestlistapi

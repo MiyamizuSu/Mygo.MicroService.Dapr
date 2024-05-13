@@ -1,0 +1,6 @@
+@MaskedTestList.Api_HostAddress = http://localhost:5210
+
+GET {{MaskedTestList.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

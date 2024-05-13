@@ -110,7 +110,26 @@ services:
       - "./dapr/configuration/:/configuration"
 
 
+  recall-maskedtestlistapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+    ports:
+      - "8080"
+  
+  recall-maskedtestlistapi-dapr:
+    command: [ "./daprd",
+               "-app-id", "recall-maskedtestlistapi",
+               "-app-port", "80",
+               "-components-path", "/components",
+               "-config", "/configuration/recall-configuration.yaml" ]
+    volumes:
+      - "./dapr/components/:/components"
+      - "./dapr/configuration/:/configuration"
+  
+
 volumes:
   recall-sqldata:
     external: false
+
 

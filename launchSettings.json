@@ -5,7 +5,8 @@
       "commandVersion": "1.0",
       "serviceActions": {
         "textlist.api": "StartDebugging",
-        "servicestatus": "StartDebugging"
+        "servicestatus": "StartDebugging",
+        "maskedtestlist.api": "StartDebugging"
       }
     }
   }
